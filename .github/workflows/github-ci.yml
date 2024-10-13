@@ -41,8 +41,7 @@ jobs:
       - name: Update frontend files in backend
         run: |
           rm -rf backend/${{ env.BACKEND_FRONTEND_DIR }}
-          mkdir -p backend/${{ env.BACKEND_FRONTEND_DIR }}
-          cp -R .output/* backend/${{ env.BACKEND_FRONTEND_DIR }}/
+          mv .output/ backend/${{ env.BACKEND_FRONTEND_DIR }}/
 
       - name: Commit and push changes to backend
         run: |
