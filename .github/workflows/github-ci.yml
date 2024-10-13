@@ -1,0 +1,54 @@
+name: Frontend Build and Update Backend
+
+on:
+  push:
+    branches:
+      - master
+
+env:
+  BACKEND_REPO: hidevs/dentist-filament
+  BACKEND_BRANCH: main
+  BACKEND_FRONTEND_DIR: front
+
+jobs:
+  build-and-update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout frontend code
+        uses: actions/checkout@v2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '22'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build frontend
+        run: |
+          cp .env.docker .env
+          npm run build
+
+      - name: Checkout backend repository
+        uses: actions/checkout@v2
+        with:
+          repository: ${{ env.BACKEND_REPO }}
+          ref: main
+          token: ${{ secrets.PAT }}
+          path: backend
+
+      - name: Update frontend files in backend
+        run: |
+          rm -rf backend/${{ env.BACKEND_FRONTEND_DIR }}
+          mkdir -p backend/${{ env.BACKEND_FRONTEND_DIR }}
+          cp -R .output/* backend/${{ env.BACKEND_FRONTEND_DIR }}/
+
+      - name: Commit and push changes to backend
+        run: |
+          cd backend
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add .
+          git commit -m "Update frontend build: ${{ github.sha }}" || echo "No changes to commit"
+          git push origin ${{ env.BACKEND_BRANCH }}
