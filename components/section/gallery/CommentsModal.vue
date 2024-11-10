@@ -42,7 +42,7 @@ const hasComments = computed(() => useCommentStore().hasComments(<number>propert
 
 
 const load = async ({done}) => {
-  if (currentPage.value < totalPages.value && !loading) {
+  if (currentPage.value < totalPages.value && !loading.value) {
     await useCommentStore().loadMoreComments(<number>properties.postId)
     done('ok')
   } else if (currentPage.value === totalPages.value) {
