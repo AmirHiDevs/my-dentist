@@ -9,12 +9,12 @@
     "postinstall": "nuxt prepare"
   },
   "devDependencies": {
-    "@nuxt/devtools": "^1.5.2",
+    "@nuxt/devtools": "^3.4.1",
     "@nuxtjs/seo": "^2.0.0-rc.16",
     "@types/luxon": "^3.3.2",
     "@types/node": "^18",
     "@types/sanitize-html": "^2.13.0",
-    "nuxt": "^3.11.1"
+    "nuxt": "^3.21.11"
   },
   "dependencies": {
     "@date-io/luxon": "^2.16.1",
